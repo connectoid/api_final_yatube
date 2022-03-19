@@ -41,3 +41,12 @@ python3 manage.py migrate
 ```
 python3 manage.py runserver
 ```
+
+Примеры запросов к API:
+
+```
+GET   /api/v1/posts/                          - получить список всех публикаций
+POST  /api/v1/posts/                          - создание новой публикации
+GET   /api/v1/posts/{id}/                     - получить публикацию по id
+POST  /api/v1/posts/{post_id}/comments/       - добавление коментария к публикации
+GET   /api/v1/posts/{post_id}/comments/{id}/  - получение комментария к публикации по id
