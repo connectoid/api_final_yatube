@@ -6,7 +6,7 @@ from posts.models import Group, Post
 from .mixins import UpdateDeleteViewSet
 from .serializers import (
     CommentSerializer, GroupSerializer, PostSerializer, FollowSerializer)
-from .permissions import OwnerOrReadOnly, ReadOnly
+from .permissions import OwnerOrReadOnly
 
 
 class PostViewSet(UpdateDeleteViewSet):
@@ -37,11 +37,6 @@ class CommentViewSet(UpdateDeleteViewSet):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
         serializer.save(author=self.request.user, post=post)
 
-    def get_permissions(self):
-        if self.action == 'retrieve':
-            return (ReadOnly(),)
-        return super().get_permissions()
-
 
 class FollowViewSet(UpdateDeleteViewSet):
     serializer_class = FollowSerializer
@@ -50,7 +45,7 @@ class FollowViewSet(UpdateDeleteViewSet):
     search_fields = ('=user__username', '=following__username')
 
     def get_queryset(self):
-        return self.request.user.follower
+        return self.request.user.follower.all()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
